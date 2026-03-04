@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --bg-deep: #0a0a0a;
+  --bg-card: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --primary-accent: #22c55e;
+  --text-main: #f8fafc;
+  --text-dim: #94a3b8;
+  --nav-active: #ffffff;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Outfit', sans-serif;
+  background-color: var(--bg-deep);
+  color: var(--text-main);
+  min-height: 100vh;
+  background-image:
+    radial-gradient(at 0% 0%, rgba(34, 197, 94, 0.05) 0, transparent 40%),
+    radial-gradient(at 100% 100%, rgba(34, 197, 94, 0.03) 0, transparent 40%);
+  background-attachment: fixed;
+  padding: 40px 20px;
+}
+
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+/* Glassmorphism Cards */
+.card {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  padding: 32px;
+  margin-bottom: 32px;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.app-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+  margin-bottom: 40px;
+  background: linear-gradient(to right, #fff, #94a3b8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.section-title {
+  font-size: 1.125rem;
+  font-weight: 500;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Inputs Premium */
+.textarea-input,
+.select-input,
+.message-input {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-main);
+  padding: 16px;
+  font-family: inherit;
+  font-size: 1rem;
+  width: 100%;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.textarea-input:focus,
+.select-input:focus,
+.message-input:focus {
+  border-color: var(--primary-accent);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.1);
+}
+
+.select-group {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 24px;
+}
+
+.select-label {
+  display: block;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  margin-bottom: 10px;
+  font-weight: 600;
+}
+
+/* Buttons */
+.btn-green {
+  background: var(--primary-accent);
+  color: #000;
+  font-weight: 700;
+  font-size: 1.1rem;
+  padding: 18px;
+  border-radius: 16px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  margin-bottom: 40px;
+}
+
+.btn-green:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 0 20px 40px rgba(34, 197, 94, 0.25);
+  background: #2ce36d;
+}
+
+.variable-badge {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--glass-border);
+  color: #fff;
+  padding: 8px 16px;
+  border-radius: 100px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.variable-badge:hover {
+  background: var(--primary-accent);
+  color: #000;
+  transform: translateY(-2px);
+}
+
+/* Navigation */
+nav {
+  display: flex;
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.nav-link {
+  background: none;
+  border: none;
+  color: var(--text-dim);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 0;
+  position: relative;
+  transition: color 0.3s;
+}
+
+.nav-link.active {
+  color: var(--nav-active);
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: var(--primary-accent);
+}
+
+/* Table Premium */
+.table-wrapper {
+  background: var(--bg-card);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th {
+  background: rgba(255, 255, 255, 0.05);
+  text-align: left;
+  padding: 20px;
+  font-size: 0.85rem;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+}
+
+td {
+  padding: 20px;
+  border-bottom: 1px solid var(--glass-border);
+  font-size: 0.95rem;
+}
+
+tr:hover td {
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--glass-border);
+  border-radius: 10px;
+}
