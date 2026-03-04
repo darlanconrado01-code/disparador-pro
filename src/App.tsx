@@ -1,11 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
 import { LayoutDashboard, FileText, Search, RefreshCcw, Plus, Trash2, Clock } from 'lucide-react';
-import { createClient } from '@supabase/supabase-js';
-
-// Inicialização do Supabase no Frontend
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
-const supabase = createClient(supabaseUrl, supabaseAnonKey);
 
 const WEBHOOK_URL = 'https://n8n.canvazap.com.br/webhook/7b88acd7-af62-4433-9c11-cf423e3d00b5';
 
@@ -45,16 +39,12 @@ function App() {
     return [];
   }, [allLines]);
 
-  // Busca Clientes (Empresas) DIRETAMENTE do Supabase no Frontend
+  // Busca Clientes (Empresas) via Servidor local (/api/clientes)
   const fetchClients = async () => {
     try {
-      const { data, error } = await supabase
-        .from('clientes')
-        .select('nome_empresa')
-        .order('nome_empresa', { ascending: true });
-
-      if (error) throw error;
-      if (data) {
+      const res = await fetch('/api/clientes');
+      const data = await res.json();
+      if (Array.isArray(data)) {
         setClients(data);
         if (data.length > 0 && !nomeEmpresa) {
           setNomeEmpresa(data[0].nome_empresa);
@@ -65,17 +55,13 @@ function App() {
     }
   };
 
-  // Busca Relatórios DIRETAMENTE do Supabase no Frontend
+  // Busca Relatórios via Servidor local (/api/relatorios)
   const fetchReports = async () => {
     setLoadingReports(true);
     try {
-      const { data, error } = await supabase
-        .from('disparos')
-        .select('*')
-        .order('data', { ascending: false });
-
-      if (error) throw error;
-      setReports(data || []);
+      const res = await fetch('/api/relatorios');
+      const data = await res.json();
+      setReports(Array.isArray(data) ? data : []);
     } catch (e) {
       console.error('Erro ao buscar relatórios:', e);
     } finally {
@@ -159,19 +145,19 @@ function App() {
         }
       } catch (error) { console.error(error); }
 
-      // Salva no Supabase (também direto do frontend se preferir, ou via API)
+      // Salva no Supabase via Servidor /api/disparos
       try {
-        const { error: insertError } = await supabase
-          .from('disparos')
-          .insert([{
+        await fetch('/api/disparos', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
             nome_campanha: nomeCampanha,
             empresa: nomeEmpresa,
             nome: nome,
             numero: phone,
-            status: statusProcessamento,
-            data: new Date().toISOString()
-          }]);
-        if (insertError) throw insertError;
+            status: statusProcessamento
+          })
+        });
       } catch (error) { console.error('Erro ao salvar no Supabase:', error); }
 
       setStatuses(prev => ({ ...prev, [i]: statusProcessamento }));
@@ -207,7 +193,7 @@ function App() {
                 <input type="text" className="select-input" value={nomeCampanha} onChange={(e) => setNomeCampanha(e.target.value)} />
               </div>
               <div>
-                <label className="select-label">Empresa (vinda do Supabase)</label>
+                <label className="select-label">Empresa (Puxando do Supabase)</label>
                 <select className="select-input" value={nomeEmpresa} onChange={(e) => setNomeEmpresa(e.target.value)}>
                   <option value="">Selecione a Empresa...</option>
                   {clients.map((c, idx) => (
@@ -329,7 +315,7 @@ function App() {
                 <input type="text" placeholder="Buscar histórico..." className="select-input" style={{ paddingLeft: '48px', width: '350px' }} value={searchReport} onChange={(e) => setSearchReport(e.target.value)} />
               </div>
               <button onClick={fetchReports} className="select-input" style={{ width: 'auto', padding: '0 20px', background: 'var(--bg-card)', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '10px' }} disabled={loadingReports}>
-                <RefreshCcw size={16} className={loadingReports ? 'animate-spin' : ''} /> {loadingReports ? 'SINC...' : 'SINCERAMENTE'}
+                <RefreshCcw size={16} className={loadingReports ? 'animate-spin' : ''} /> {loadingReports ? 'SINC...' : 'ATUALIZAR'}
               </button>
             </div>
           </div>
