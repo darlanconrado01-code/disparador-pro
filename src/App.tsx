@@ -1,5 +1,5 @@
 import { useState, useMemo, useEffect } from 'react';
-import { LayoutDashboard, FileText, Send, Building2, Calendar, User, Search, RefreshCcw, Plus, Trash2, Image as ImageIcon, Clock } from 'lucide-react';
+import { LayoutDashboard, FileText, Search, RefreshCcw, Plus, Trash2, Clock } from 'lucide-react';
 import { createClient } from '@supabase/supabase-js';
 
 // Inicialização do Supabase no Frontend
@@ -194,7 +194,10 @@ function App() {
 
       {activeTab === 'disparador' ? (
         <div style={{ animation: 'fadeIn 0.5s ease' }}>
-          <h1 className="app-title">marking<span style={{ color: 'var(--primary-accent)' }}>®</span> pro</h1>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '15px' }}>
+            <h1 className="app-title" style={{ margin: 0 }}>marking<span style={{ color: 'var(--primary-accent)' }}>®</span> pro</h1>
+            <span style={{ background: 'rgba(34,197,94,0.1)', color: '#22c55e', padding: '4px 12px', borderRadius: '20px', fontSize: '0.7rem', fontWeight: 'bold', border: '1px solid rgba(34,197,94,0.2)', letterSpacing: '1px' }}>LIVE EDITION</span>
+          </div>
 
           <div className="card">
             <p className="section-title">01. Configurações Estratégicas</p>
